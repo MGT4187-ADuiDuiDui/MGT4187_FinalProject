@@ -1,0 +1,34 @@
+---
+title: "Untitled"
+author: "119020110 陈景泰"
+date: "2022/4/16"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Linear regression
+
+```{r}
+# load library
+library(dplyr)
+# load the data
+train = read.csv('data/sales_train.csv',encoding = "UTF-8")
+items = read.csv('data/items.csv',encoding = "UTF-8")
+test = read.csv('data/test.csv',encoding = "UTF-8")
+category = read.csv('data/item_categories.csv',encoding = "UTF-8")
+# merge the data
+train = left_join(train,items,c("item_id" = "item_id"))
+# drop useless column
+train = train[,-7]
+train = train[,-4]
+# change the data type
+train$item_category_id = as.character(train$item_category_id)
+train$shop_id = as.character(train$shop_id)
+# run the regression
+lm.fit=lm(item_cnt_day~shop_id+item_category_id,data=train)
+# check the results
+summary(lm.fit)
+```
